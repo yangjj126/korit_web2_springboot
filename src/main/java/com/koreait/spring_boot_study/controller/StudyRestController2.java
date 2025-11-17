@@ -37,21 +37,6 @@ import static java.util.Arrays.stream;
         return (num1 + num2 + num3 + num4)/4.0;
     }
 
-//    @GetMapping("/add")
-//    public int add(int num1, int num2){
-//        int result = num1 + num2;
-//        log.info("완료");
-//        return result;
-//    }
-//
-//    @GetMapping("/average")
-//    public double average(int num1,int num2,int num3,int num4){
-//        double average = (double) (num1 + num2 + num3 + num4)/4;
-//        return average;
-//    }
-
-
-
     /*
     포스트 응답으로
     [
@@ -102,7 +87,6 @@ import static java.util.Arrays.stream;
     }
 
 
-
     // 게시물 조회 컨트롤러를 완성해주세요
     @GetMapping("/post/{id}")
     public Map<String, Object> getPost(@PathVariable("id") int id){
@@ -117,9 +101,9 @@ import static java.util.Arrays.stream;
         // Optional -> null 일수도 있는 값을 포장한것
         Optional<Post> optionalPost= postList.stream()
                 .filter(post -> post.getId() == id)
-                .findFirst(); // 처음찾은 것을 가져오세요. 타입이 obtional
+                .findFirst(); // 처음찾은 것을 가져오세요. 타입이 optional
 
-        if (optionalPost.isEmpty()){ // optional이 가지고 있는 값이 null이라면,
+        if (optionalPost.isEmpty()){ // optional이 가지고 있는 값이 null 이라면,
             return Map.of("error", " 해당id의 게시글은 존재안함 ");
         }
 
