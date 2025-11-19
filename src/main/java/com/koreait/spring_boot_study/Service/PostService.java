@@ -1,10 +1,13 @@
 package com.koreait.spring_boot_study.Service;
 
+import com.koreait.spring_boot_study.entity.Post;
+import com.koreait.spring_boot_study.exception.PostNotFoundException;
 import com.koreait.spring_boot_study.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,13 +22,14 @@ public class PostService {
 
 
     // 전체조회
-    public List<String> getAllPostTitleName(){
+    public List<String> getAllPostNames(){
     // 다가져온다음에, 음, 거기서 map 돌면서 이름만 뽑고, 그것들 다모아서 리스트로 만들기
         return postRepository.findAllPosts()
                 .stream()
                 .map(Post -> Post.getTitle())
                 .collect(Collectors.toList());
     }
+
     //    List<String> postTitles = postRepository.findAllPosts() // 전체 다 리턴받았고,
     //            .stream().map(Post -> Post.getTitle())
     //            .collect(Collectors.toList());
@@ -37,6 +41,22 @@ public class PostService {
     //        return targetTitle;
     //    }
 
-    // 게시글 하나 조회 : isEmpty -> 정석) 예외를 던져야함
+
+
+    // 게시글 하나 조회 : isEmpty -> 정석) 예외를 던져야함(커스텀예외)
+    public String getPostTitleById(int id){
+        Optional<Post> postOptional = postRepository.findPostById(id);
+        // 옵셔널을 언패킹하는 방법(예외도 같이 던질 수 있음)
+        // 옵셔널.orElseThrow() :
+        // Optional에 포장된 객체가 null이 아니면, post 변수에 담고,
+        // null 이면, 예외를 던지세요
+        Post post = postOptional.orElseThrow(
+                () -> new PostNotFoundException("게시글을 찾을 수 없음")
+        );
+        String title =  post.getTitle();
+        return title;
+    }
+
+
 
 }

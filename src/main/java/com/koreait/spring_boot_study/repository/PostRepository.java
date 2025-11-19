@@ -29,6 +29,7 @@ public class PostRepository {
     }
 
     public Optional<Post> findPostById(int id){
+        // Optional은 유틸리티이기 때문에, 굳이 @Bean을 안써도 된다
         return posts.stream()
                 .filter(post -> post.getId() == id)
                 .findFirst();

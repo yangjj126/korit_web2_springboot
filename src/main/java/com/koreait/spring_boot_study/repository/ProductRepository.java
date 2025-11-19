@@ -49,7 +49,30 @@ public class ProductRepository {
         String targetName = optionalProduct.get().getName();
 
         return targetName;
-
     }
 
+
+
+
+    // 상품 추가
+    public int insertProduct(String name, int price){
+        // 아이디 최대값 추적
+        int maxId = products.stream()
+                .map(product -> product.getId())
+                .max((id1, id2) -> id1 - id2)
+                .get();
+                // 저번에 배운거 복습해야겠지 ,,, 함수형메서드 배운것들말이여
+
+        // for문 사용
+        int maxId2 = 0;
+        for (Product product : products){ // product 하나씩 꺼내오고,
+            if (product.getId() > maxId){ // 비교
+                maxId2 = product.getId(); // 꺼내온값이 크면, 그것으로 업데이트
+            }
+        }
+
+        Product product = new Product(maxId + 1,  name, price);
+        products.add(product);
+        return 1; //
+    }
 }

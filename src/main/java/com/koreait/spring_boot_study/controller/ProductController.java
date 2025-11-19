@@ -1,12 +1,11 @@
 package com.koreait.spring_boot_study.controller;
 
 import com.koreait.spring_boot_study.Service.ProductService;
+import com.koreait.spring_boot_study.dto.AddProductReqDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/product")
@@ -32,5 +31,20 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductNameById(id));
     }
     // 왜 오류 뜨는지 확인해보자
+
+
+
+    // 컨트롤러에서 추가한다
+    // DB에 추가 -> POST
+    @PostMapping("/add")
+    public ResponseEntity<?> postProduct(
+            @RequestBody AddProductReqDto dto
+    ){
+        productService.addProduct(dto); // 이것부터 컨트롤러에서 쫙 내려가게되는 구조
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("성공");
+    }
+
 }
 
