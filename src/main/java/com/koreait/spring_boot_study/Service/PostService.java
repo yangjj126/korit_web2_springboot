@@ -1,8 +1,14 @@
 package com.koreait.spring_boot_study.Service;
 
+import com.koreait.spring_boot_study.dto.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.ModifyPostReqDto;
+import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
+import com.koreait.spring_boot_study.dto.PostReqDto;
 import com.koreait.spring_boot_study.entity.Post;
+import com.koreait.spring_boot_study.exception.PostInsertException;
 import com.koreait.spring_boot_study.exception.PostNotFoundException;
 import com.koreait.spring_boot_study.repository.PostRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,4 +65,64 @@ public class PostService {
 
 
 
+
+    // 게시글 전체 리턴
+    public List<PostReqDto> getAllPost() {
+        // 나머지 못적은것 적어주기
+        return postRepository.findAllPosts() // List<Post>
+                .stream()
+                .map(post -> new PostReqDto(post.getTitle(),
+                        post.getContent())) // Stream<PostResDto>
+                        .collect(Collectors.toList()); // List<PostResDto>
+    }
+
+    // 게시글 단건 조회
+    public PostReqDto getPostById(int id){
+        Post post = postRepository.findPostById(id) // Optional<Post>
+                .orElseThrow(
+                        () -> new PostNotFoundException("게시글을 찾을 수 없음")
+                );
+        return new PostReqDto(post.getTitle(), post.getContent());
+    }
+
+
+
+
+
+    // 어떻게 했냐
+    // AddProductReqDto dto를 받아서,
+    /*
+    <Controller>
+    컨트롤러에 이미 제이슨으로 값이 입력되어있고, 컨트롤러에서 .addProduct를 조지고
+    <Service>
+    addProduct안에서
+    InsertProduct를 통해서, dto.getName() , dto.getPrice()을 하고,
+    <Repostitory>
+    InsertProduct 실행
+     */
+    public void addPost(@Valid AddPostRequestDto dto){
+        int successCount = postRepository.insertPost(dto.getTitle(), dto.getContent());
+
+        if (successCount <= 0){
+            throw new PostInsertException("게시물등록x");
+        }
+    }
+
+
+    public void deletePost(int id){
+        int successCount = postRepository.deletePostById(id);
+
+        if (successCount <= 0){
+            throw new PostNotFoundException("삭제할거 없어");
+        }
+    }
+
+    public void updatePost(int id, @Valid ModifyPostReqDto dto){ // ModifyPostReqDto를 통해서 만든 entity들을 이용할거다
+        // 그 이유는 해당 엔티티에 조건을 걸어줄거기 때문이다
+        int successCount = postRepository.updatePost(id, dto.getTitle(), dto.getContent());
+
+        if (successCount <= 0){
+            throw new PostNotFoundException("업데이트불가능");
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.koreait.spring_boot_study.repository;
 
 
 import com.koreait.spring_boot_study.entity.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class ProductRepository {
     // DB 대용
@@ -74,5 +76,74 @@ public class ProductRepository {
         Product product = new Product(maxId + 1,  name, price);
         products.add(product);
         return 1; //
+    }
+
+
+
+
+
+
+    //  @@ 단건 삭제
+    // id를 통해서 단건을 삭제하는 메서드
+    public int deleteProductById(int id){
+        // 매개변수로 들어온 id가 유효한지?
+        // 유효하지 않으면, -> 0을 린턴 (service)에서
+        Optional<Product> target = products.stream()
+                .filter(product -> product.getId() == id)
+                .findFirst(); // 매핑되는 첫번째 데이터를 Optional에 포장해서 들고 오세요
+
+        if (target.isEmpty()){ // 찾은 optional를 언패킹했더니 null이라면,
+            return 0;
+        }
+
+        // 코드가 진행이 된다는 것은 -> if 문에 걸리지 않은 것
+        // 그러면, 이제 제거를 해주면 된다
+        // 옵셔널 언패킹
+        Product product = target.get();
+        // 제거
+        products.remove(product);
+        // repo 에서는 products에서 삭제하는 기능
+        log.info("상품삭제완료 : {}", product);
+        return 1;
+    }
+
+    // @@ 단건 업데이트
+    // 기존의 id를 받아서, 그 내용을 변화시키고 싶다는 것
+    public int updateProduct(int id, String name, int price){
+        // 매개변수로 들어온 id가 유효한 id인지 확인해야 한다
+        Product target = null; //null로 초기화
+
+        // 우선, id 부터 확인
+        for (Product product : products){
+            if (product.getId() == id){ //매개변수로 들어온 id와 같다면
+                target = product;
+                break;
+            }
+        }
+
+        if (target == null){ // target이 업데이트가 안되었다면,
+            // id는 유효하지 않은것
+            return 0; // 업데이트는 0건 했엉
+        } // 여기에 안걸렸으면, target은 업데이트되있음
+
+
+        // 아래 부분 이해 안됨
+
+        // List 업데이트
+        // List.set(index, 저장할 데이터)  이거 코테시간에 배웠다
+        // 리스트.indexOf(데이터) -> 해당데이터릐 index 번호를 리턴
+        int index = products.indexOf(target);
+        // entity 형태로 데이터베이스에 저장됨
+
+        //******************************************************
+        Product newProduct = new Product(id, name, price);
+        // 위에 매개변수에 있는 id, name, price를 받아와서, 새롭게 형성된 객체를 만든다
+
+        // target이 있던 자리에 newProduct가 저장됨
+        products.set(index, newProduct);
+        // 그 target의 index 안에 newProduct 객체를 다 집어넣겠다...
+
+
+        return 1;
     }
 }

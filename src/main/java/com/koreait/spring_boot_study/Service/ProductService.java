@@ -1,9 +1,12 @@
 package com.koreait.spring_boot_study.Service;
 
 import com.koreait.spring_boot_study.dto.AddProductReqDto;
+import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
 import com.koreait.spring_boot_study.entity.Product;
+import com.koreait.spring_boot_study.exception.ProductNotFoundException;
 import com.koreait.spring_boot_study.exception.ProductinsertExeption;
 import com.koreait.spring_boot_study.repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +50,6 @@ public class ProductService {
     }
 
 
-
-
-
-
     // 3. 상품추가
     public void addProduct(AddProductReqDto dto){
         int successCount = productRepository
@@ -61,5 +60,38 @@ public class ProductService {
             throw new ProductinsertExeption("상품등록 불가");
         }
     }
+
+    // 어떻게 했냐
+    // AddProductReqDto dto를 받아서,
+    /*
+    <Controller>
+    컨트롤러에 이미 제이슨으로 값이 입력되어있고, 컨트롤러에서 .addProduct를 조지고
+    <Service>
+    addProduct안에서
+    InsertProduct를 통해서, dto.getName() , dto.getPrice()을 하고,
+    <Repostitory>
+    InsertProduct 실행
+     */
+
+
+    // 4. 상품삭제
+    public void removeProduct(int id){
+        int successCount = productRepository.deleteProductById(id);
+        if (successCount <= 0){
+            // ProductNotFound 예외를 사용
+            // exception 만든다
+            throw new ProductNotFoundException("해당 상품은 존재하지 않는다");
+        }
+    }
+
+    // 5. 상품 업데이트
+    public void modifyProduct(int id, @Valid ModifyProductReqDto dto){
+        int successCount = productRepository.updateProduct(id, dto.getName(), dto.getPrice());
+
+        if (successCount <= 0){
+            throw new ProductNotFoundException("해당 상품은 존재하지 않습니다");
+        }
+    }
+
 
 }

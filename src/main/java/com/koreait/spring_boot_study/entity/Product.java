@@ -3,6 +3,7 @@ package com.koreait.spring_boot_study.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /*
 entity -> 관계형 데이터베이스테이블과 일대일대응이 되는 자바 객체
@@ -11,6 +12,7 @@ entity -> 관계형 데이터베이스테이블과 일대일대응이 되는 자
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString // 이거 안해놓으면, 메모리 주소값이 보인다
 public class Product {
     private int id;
     private String name;
