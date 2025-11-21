@@ -75,5 +75,18 @@ where # =서브쿼리 -> 결과가 반드시 하나여야 한다.(limit 1)
 			order_date desc
 		limit 1
     );
+    
+# 주문이 존재하는 상품만 조회
+select
+	*
+from 
+	product
+where
+	product_id in (
+		select 
+			product_id
+		from
+			orders
+    );
 
  
