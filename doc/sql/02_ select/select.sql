@@ -232,20 +232,13 @@ select, where, from, group by, having, order by
 # group - by에 있는 필드이거나, 집계함수는 select에 선언 할 수 있다
 select 
 	case
-		when product_price <= 50000 then `저가`
-		when product_price <= 100000 then `중가`
-		else `고가`
+		when product_price <= 50000 then '저가'
+		when product_price <= 100000 then '중가' # 여기서는 백틱이 아니고, 문자열 이므로, 홑따옴표 써줘라
+		else '고가' 
     end as `price_range`, # price_range 칼럼에 들어갈값은 저가, 중가, 고가 중 하나
+    ####################################################################
     avg(product_price) as `평균가` # 평균가라는 컬럼
 from 
 	product
 group by
 	price_range;
-
-
-
-
-    
-    
-
-    
