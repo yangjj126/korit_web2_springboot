@@ -2,10 +2,10 @@ package com.koreait.spring_boot_study.Service;
 
 import com.koreait.spring_boot_study.dto.AddProductReqDto;
 import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
-import com.koreait.spring_boot_study.entity.Product;
+import com.koreait.spring_boot_study.dto.Top3SellingProductResDto;
 import com.koreait.spring_boot_study.exception.ProductNotFoundException;
 import com.koreait.spring_boot_study.exception.ProductinsertExeption;
-import com.koreait.spring_boot_study.repository.ProductRepository;
+import com.koreait.spring_boot_study.repository.impl.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,4 +94,16 @@ public class ProductService {
     }
 
 
+    // Top3 상품들 리턴해주는 메서드 ( model을 리턴하면 안됨 )
+    public List<Top3SellingProductResDto> getTop3SellingProduct(){
+        List<Top3SellingProductResDto> result = productRepository.
+        List<Top3SellingProductResDto> outputs = new ArrayList<>();
+        for(Top3SellingProductResDto result : results){
+            Top3SellingProductResDto dto
+                    = Top3SellingProductResDto.from(result);
+
+            outputs.add(dto);
+        }
+        return outputs
+    }
 }

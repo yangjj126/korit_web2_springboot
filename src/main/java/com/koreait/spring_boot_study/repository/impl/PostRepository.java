@@ -1,6 +1,7 @@
-package com.koreait.spring_boot_study.repository;
+package com.koreait.spring_boot_study.repository.impl;
 
 import com.koreait.spring_boot_study.entity.Post;
+import com.koreait.spring_boot_study.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -146,5 +147,18 @@ public class PostRepository {
         // 원래 index(target이 있던 자리)에  새로 만든, newpost를 덮어씌어 주세요
         // set을 통해서, 해당 index의 title, content를 다 뜯어 고쳐야한다
         return 1;
+    }
+
+    public static interface ProductRepo {
+        // 1. 다건조회(전체조회)
+        List<Product> findAllProducts();
+        // 2. 단건조회(상품 하나만 조회)
+        String findProductNameById(int id);
+        // 상품 추가
+        int insertProduct(String name, int price);
+        // 단건 삭제
+        int deleteProductById(int id);
+        // 단건 업데이트
+        int updateProduct(int id, String name, int price);
     }
 }

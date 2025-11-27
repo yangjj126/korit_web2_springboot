@@ -1,11 +1,12 @@
-package com.koreait.spring_boot_study.repository;
+package com.koreait.spring_boot_study.repository.impl;
 
 
 import com.koreait.spring_boot_study.entity.Product;
+import com.koreait.spring_boot_study.model.Top3SellingProduct;
+import com.koreait.spring_boot_study.repository.ProductRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
-public class ProductRepository {
+public class ProductRepository implements ProductRepo {
     // DB 대용
     private List<Product> products = new ArrayList<>(
             Arrays.asList(
@@ -27,7 +28,7 @@ public class ProductRepository {
     // 1. 전체조회
 
     // 리스트자체를 다 넘겨준다
-    public List<Product> finalAllProducts(){
+    public List<Product> findAllProducts(){
         return products;
     }
 
@@ -145,5 +146,10 @@ public class ProductRepository {
 
 
         return 1;
+    }
+
+    @Override // 구현 x
+    public List<Top3SellingProduct> findTop3SellingProducts() {
+        return List.of();
     }
 }
