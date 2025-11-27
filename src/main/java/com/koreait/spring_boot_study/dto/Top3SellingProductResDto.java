@@ -1,6 +1,7 @@
 package com.koreait.spring_boot_study.dto;
 
 
+import com.koreait.spring_boot_study.model.Top3SellingProduct;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,10 +18,10 @@ public class Top3SellingProductResDto {
     // map사용!
 
     // 모델 -> Dto 변환 메서드
-    public static Top3SellingProductResDto from(Top3SellingProductResDto model) {
+    public static Top3SellingProductResDto from(Top3SellingProduct model) {
         return new Top3SellingProductResDto(
-                model.productName,
-                model.getTotalScoreCount()
+                model.getProductName(),
+                model.getTotalSoldCount()
                 );
     }
 }

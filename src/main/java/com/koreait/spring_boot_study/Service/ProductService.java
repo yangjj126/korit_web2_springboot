@@ -5,6 +5,7 @@ import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
 import com.koreait.spring_boot_study.dto.Top3SellingProductResDto;
 import com.koreait.spring_boot_study.exception.ProductNotFoundException;
 import com.koreait.spring_boot_study.exception.ProductinsertExeption;
+import com.koreait.spring_boot_study.model.Top3SellingProduct;
 import com.koreait.spring_boot_study.repository.impl.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ProductService {
 
     // 1. 전체조회(이름만)
     public List<String> getAllProductNames() {
-        List<String> productNames = productRepository.finalAllProducts()
+        List<String> productNames = productRepository.findAllProducts()
                 .stream().map(product -> product.getName())
                 .collect(Collectors.toList());
         return productNames;
@@ -96,14 +97,14 @@ public class ProductService {
 
     // Top3 상품들 리턴해주는 메서드 ( model을 리턴하면 안됨 )
     public List<Top3SellingProductResDto> getTop3SellingProduct(){
-        List<Top3SellingProductResDto> result = productRepository.
+        List<Top3SellingProduct> results = productRepository.findTop3SellingProducts();
         List<Top3SellingProductResDto> outputs = new ArrayList<>();
-        for(Top3SellingProductResDto result : results){
+        for(Top3SellingProduct result : results){
             Top3SellingProductResDto dto
                     = Top3SellingProductResDto.from(result);
 
             outputs.add(dto);
         }
-        return outputs
+        return outputs;
     }
 }

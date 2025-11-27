@@ -111,7 +111,7 @@ public class ProductRepository implements ProductRepo {
     // @@ 단건 업데이트
     // 기존의 id를 받아서, 그 내용을 변화시키고 싶다는 것
     public int updateProduct(int id, String name, int price){
-        // 매개변수로 들어온 id가 유효한 id인지 확인해야 한다
+        // 매개변수로 들어온 id가 유효한 id 인지 확인해야 한다
         Product target = null; //null로 초기화
 
         // 우선, id 부터 확인
