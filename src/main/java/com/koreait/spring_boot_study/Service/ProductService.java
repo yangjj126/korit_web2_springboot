@@ -6,7 +6,9 @@ import com.koreait.spring_boot_study.dto.Top3SellingProductResDto;
 import com.koreait.spring_boot_study.exception.ProductNotFoundException;
 import com.koreait.spring_boot_study.exception.ProductinsertExeption;
 import com.koreait.spring_boot_study.model.Top3SellingProduct;
+import com.koreait.spring_boot_study.repository.ProductRepo;
 import com.koreait.spring_boot_study.repository.impl.ProductRepository;
+import com.koreait.spring_boot_study.repository.mapper.ProductMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    //    private ProductRepository productRepository;
-    private ProductRepository productRepository;
+
+//    private ProductRepo productRepository;
+    private ProductMapper productRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductMapper productRepository) {
         this.productRepository = productRepository;
     }
     // 생성자 조져주고,

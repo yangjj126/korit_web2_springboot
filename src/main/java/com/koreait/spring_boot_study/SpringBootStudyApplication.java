@@ -1,9 +1,12 @@
 package com.koreait.spring_boot_study;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@MapperScan
 public class SpringBootStudyApplication {
 	// 스프링부트 서버 진입점
 	// 유일하게 main이 선언된곳.
@@ -11,3 +14,4 @@ public class SpringBootStudyApplication {
 		SpringApplication.run(SpringBootStudyApplication.class, args);
 	}
 }
+

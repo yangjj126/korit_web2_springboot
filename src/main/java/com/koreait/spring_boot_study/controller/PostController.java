@@ -24,8 +24,6 @@ public class PostController {
         this.postService = postService;
     }
 
-
-
     @GetMapping("/title/{id}")
     public ResponseEntity<?> getPostTitleById(@PathVariable int id){
         String title = postService.getPostTitleById(id);
@@ -41,7 +39,7 @@ public class PostController {
     }
 
 
-    @GetMapping("/title/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable int id) {
         PostReqDto dto = postService.getPostById(id);
         return ResponseEntity.ok(id);

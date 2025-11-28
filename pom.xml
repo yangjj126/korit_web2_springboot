@@ -37,11 +37,11 @@
 		</dependency>
 
 		<!-- orm , 마이바티스 -->
-<!--		<dependency>-->
-<!--			<groupId>org.mybatis.spring.boot</groupId>-->
-<!--			<artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--			<version>3.0.5</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.5</version>
+		</dependency>
 
 		<!--스프링부트 프로젝트 개발시 유용한 툴들, 기능 예)코드변경시 알아서 함 -->
 		<dependency>
@@ -52,11 +52,11 @@
 		</dependency>
 
 <!--		&lt;!&ndash; DB(mysql)연결 라이브러리 &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>com.mysql</groupId>-->
-<!--			<artifactId>mysql-connector-j</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!--어노테이션기반 동적코드 삽입  예) @Data, @Builder... -->
 		<dependency>

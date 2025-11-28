@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### 시크릿 ###
+src/main/resources/application-secret.yaml
+
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +35,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### 이안에 있는 것들은 git push가 안된다 - 보안상의 이유로 ###
+
