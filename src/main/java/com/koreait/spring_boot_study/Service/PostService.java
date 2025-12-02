@@ -150,9 +150,11 @@ public class PostService {
         Post post = postRepository.findPostWithComments(id).orElseThrow(()-> new PostNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
         // comments List null 체크해야함!
-        List<String> comments = post.getComments() == null ? List.of() : post.getComments()
+        List<String> comments = post.getComments() == null
+                ? List.of()  // null이면, 빈리스트 반환
+                : post.getComments()
                 .stream().map(c-> c.getCommentContent())
-                .collect(Collectors.toList()); // 아니라면, id빼고, content 내용만
+                .collect(Collectors.toList()); // 아니라면, id 빼고 content 내용만 content 내용만
 
         return new PostWithCommentsResDto(
                 post.getTitle(),
