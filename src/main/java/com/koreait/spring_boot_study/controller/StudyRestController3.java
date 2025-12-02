@@ -1,7 +1,7 @@
 package com.koreait.spring_boot_study.controller;
 
-import com.koreait.spring_boot_study.dto.AddPostRequestDto;
-import com.koreait.spring_boot_study.dto.StudyRequestDto;
+import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.StudyRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

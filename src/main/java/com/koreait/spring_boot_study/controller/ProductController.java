@@ -1,8 +1,9 @@
 package com.koreait.spring_boot_study.controller;
 
 import com.koreait.spring_boot_study.Service.ProductService;
-import com.koreait.spring_boot_study.dto.AddProductReqDto;
-import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
+import com.koreait.spring_boot_study.dto.req.AddProductReqDto;
+import com.koreait.spring_boot_study.dto.req.ModifyProductReqDto;
+import com.koreait.spring_boot_study.dto.req.SearchProductReqDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,14 @@ public class ProductController {
     @GetMapping("/{productId}/quantity")
     public ResponseEntity<?> getProductWithQuantities(@PathVariable int productId) {
         return ResponseEntity.ok(productService.getProductQuantityById(productId));
+    }
+
+    // 조건 검색
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProducts(@ModelAttribute SearchProductReqDto dto) {
+        return ResponseEntity.ok(
+                productService.searchDetailProducts(dto)
+        );
     }
 }
 

@@ -1,12 +1,15 @@
 package com.koreait.spring_boot_study.Service;
 
-import com.koreait.spring_boot_study.dto.AddPostRequestDto;
-import com.koreait.spring_boot_study.dto.ModifyPostReqDto;
-import com.koreait.spring_boot_study.dto.PostReqDto;
+import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.ModifyPostReqDto;
+import com.koreait.spring_boot_study.dto.req.SearchPostReqDto;
+import com.koreait.spring_boot_study.dto.req.SearchProductReqDto;
+import com.koreait.spring_boot_study.dto.res.PostReqDto;
+import com.koreait.spring_boot_study.dto.res.PostWithCommentsResDto;
+import com.koreait.spring_boot_study.dto.res.SearchPostResDto;
 import com.koreait.spring_boot_study.entity.Post;
 import com.koreait.spring_boot_study.exception.PostInsertException;
 import com.koreait.spring_boot_study.exception.PostNotFoundException;
-import com.koreait.spring_boot_study.repository.impl.PostRepository;
 import com.koreait.spring_boot_study.repository.mapper.PostMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,4 +128,37 @@ public class PostService {
             throw new PostNotFoundException("업데이트불가능");
         }
     }
+
+    // 게시물 상세 검색 dto - req, res 각각 만들어 주는게 best
+    public List<SearchPostResDto> searchDetailPosts(SearchPostReqDto dto) {
+        List<Post> posts = postRepository.searchDetailPosts(
+                dto.getTitleKeyword(), dto.getContentKeyword()
+        );
+
+        if (posts == null || posts.isEmpty()) {
+            throw new PostNotFoundException("조건에 맞는 게시글이 없습니다");
+        }
+
+        // List<Post> -> List<SearchPostResDto>
+        // List<entity> -> List<dto>
+        return posts.stream()
+                .map(p->new SearchPostResDto(p.getTitle(), p.getContent()))
+                .collect(Collectors.toList());
+    }
+
+    public PostWithCommentsResDto getPostWithComments(int id){
+        Post post = postRepository.findPostWithComments(id).orElseThrow(()-> new PostNotFoundException("해당 게시글을 찾을 수 없습니다."));
+
+        // comments List null 체크해야함!
+        List<String> comments = post.getComments() == null ? List.of() : post.getComments()
+                .stream().map(c-> c.getCommentContent())
+                .collect(Collectors.toList()); // 아니라면, id빼고, content 내용만
+
+        return new PostWithCommentsResDto(
+                post.getTitle(),
+                post.getContent(),
+                comments
+        );
+    }
+
 }

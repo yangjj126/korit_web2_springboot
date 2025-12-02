@@ -61,9 +61,17 @@ public interface ProductMapper {
     );
 
     // join 결과를 받아옴
-    // 판매량 기준 top3를 받아오자!
+    // "판매량 기준 top3" 를 받아오자!
     public List<Top3SellingProduct> findTop3SellingProducts();
 
     // productId로 판매량까지 같이 조회
     Product findProductWithQuantities(int productId);
+
+    // 상품이름, 최소 가격, 최대 가격 필터링 검색
+    // where product_name like '% + {Product} + %'
+    List<Product> searchDetailProducts(
+            @Param("nameKeyword") String nameKeyword,
+            @Param("minPrice") Integer minPrice,
+            @Param("maxPrice") Integer maxPrice
+    );
 }

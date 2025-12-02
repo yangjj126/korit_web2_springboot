@@ -1,12 +1,14 @@
 package com.koreait.spring_boot_study.controller;
 
 import com.koreait.spring_boot_study.Service.PostService;
-import com.koreait.spring_boot_study.dto.*;
+import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.ModifyPostReqDto;
+import com.koreait.spring_boot_study.dto.req.SearchPostReqDto;
+import com.koreait.spring_boot_study.dto.res.PostReqDto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,8 +81,19 @@ public class PostController {
 
     // 수정요청 PUT, PATCH
     // PUT -> 전체데이터를 갈아끼우겠다(title, content) 제일 많이 씀
-
     // PATCH -> 일부 데이터를 갈아끼우겠다(content) -> null을 허용해야 하는 경우가 많음
+    // -> null을 허용해야 하는 경우가 많음
+    @GetMapping("/search")
+    public ResponseEntity<?> searchDetailPosts(
+            // RequestParam을 지정하면, 반드시, 값이 있어야 한다
+            // 없으면, 400에러 발생
+            // required 옵션에 false를 지정하면, 옵션처럼 사용 가능
+            @RequestParam(required = false) String titleKeyword,
+            @RequestParam(required = false) String contentKeyword
+    ){
+        SearchPostReqDto dto
+                = new SearchPostReqDto(titleKeyword, contentKeyword);
 
-    // CRUD완료..
+        return ResponseEntity.ok( postService.searchDetailPosts(dto));
+    }
 }
