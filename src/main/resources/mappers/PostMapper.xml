@@ -47,15 +47,20 @@ resultMap은 resultMap은 SQL 쿼리의 실행 결과를
     </select>
 
     <insert id="insertPost">
-
+        insert into
+            post(title, content)
+        values
+            (null, #{title} . #{content})
     </insert>
 
     <delete id="deletePostById">
-
+        delete from post
+        where post_id = #{id}
     </delete>
 
     <update id="updatePost">
-
+        update post
+        set post_title = #{title} , post_content = #{content}
+        where post_id = #{id}
     </update>
-
 </mapper>

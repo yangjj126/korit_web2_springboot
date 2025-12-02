@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepo {
-
     // 전체게시글 조회 구현, 글제목 조회
     List<Post> findAllPosts();
     // 게시글 단건 조회 구현, 글제목 조회

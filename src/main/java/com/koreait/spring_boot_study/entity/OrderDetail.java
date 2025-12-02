@@ -11,7 +11,7 @@ public class OrderDetail {
     private int orderDetailId;
     private int orderId; // fk
 //    private int productId; // fk
-    private int quantityId;
+    private int quantity;
 
     // 연관관계를 가지려면, fk 대신에, 객체를 가지고 있으면 된다
     // fk(다른 테이블의 Pk)를 칼럼으로 가지고 있다 ->

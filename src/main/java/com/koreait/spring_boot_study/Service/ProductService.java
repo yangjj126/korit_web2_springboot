@@ -2,7 +2,10 @@ package com.koreait.spring_boot_study.Service;
 
 import com.koreait.spring_boot_study.dto.AddProductReqDto;
 import com.koreait.spring_boot_study.dto.ModifyProductReqDto;
+import com.koreait.spring_boot_study.dto.ProductQuantityResDto;
 import com.koreait.spring_boot_study.dto.Top3SellingProductResDto;
+import com.koreait.spring_boot_study.entity.OrderDetail;
+import com.koreait.spring_boot_study.entity.Product;
 import com.koreait.spring_boot_study.exception.ProductNotFoundException;
 import com.koreait.spring_boot_study.exception.ProductinsertExeption;
 import com.koreait.spring_boot_study.model.Top3SellingProduct;
@@ -109,5 +112,46 @@ public class ProductService {
             outputs.add(dto);
         }
         return outputs;
+    }
+
+    public List<ProductQuantityResDto> getProductQuantityById(int productId){
+        // Product 객체를 가져옴 ( orderDetails 필드(list)를 mybatis가 알아서 채워옴 )
+        Product product = productRepository
+                .findProductWithQuantities(productId);
+        // 만약, A entity가 B를 가지고 있고,
+        // B entity가 A를 가지고 있을 수 있음. (양방향)
+        // a.getB().getA().getA()....... -> 자바에서는 문제가 안됨
+        // -> 양방향설정을 왠만하면, 쓰지 말자
+
+        // 옵셔녈이 아니라서 null 채크를 해준다
+        // product가 null이 아니라, 필드에 있는 List<OrderDetail>이 null이면
+        if (product == null || product.getOrderDetails() == null){
+            return List.of(); // 비어있는 리스트 리턴
+        }
+
+        List<ProductQuantityResDto> resultData = null;
+        // stream Api 사용하는 버젼
+        resultData = product.getOrderDetails() // List<OrderDetail>
+                .stream()  // Stream<OrderDetail>
+                .map(od -> new ProductQuantityResDto(
+                        // od.getProduct() -> xml에 정의하지 않았기 때문에, null(단방향)
+                        product.getName(),
+                        product.getPrice(),
+                        od.getQuantity()
+                )) // Stream<ProductQuantityResDto>
+                .collect(Collectors.toList());
+
+//        // for 문을 사용하는 버젼
+//        for(OrderDetail od : product.getOrderDetails()) {
+//            ProductQuantityResDto dto = new ProductQuantityResDto(
+//                    product.getName(),
+//                    product.getPrice(),
+//                    od.getQuantity()
+//            );
+//            resultData.add(dto);
+//        }
+
+        // 둘중 하나를 택일 해서 그걸 사용하면 된다
+        return resultData;
     }
 }

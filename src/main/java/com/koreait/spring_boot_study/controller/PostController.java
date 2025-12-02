@@ -51,7 +51,7 @@ public class PostController {
     // +  Validation을 사용해봅시다!
     @PostMapping("/add")
     public ResponseEntity<?> addPost(
-            @Valid @RequestBody AddPostRequestDto dto
+            @Valid @RequestBody AddPostRequestDto dto // 잭슨이 dto를 만들때, NoArgsController
     ){
         postService.addPost(dto);
         // 못적음

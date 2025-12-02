@@ -2,6 +2,7 @@ package com.koreait.spring_boot_study.repository.mapper;
 
 import com.koreait.spring_boot_study.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,11 +16,27 @@ public interface PostMapper {
     Optional<Post> findPostById(int id);
 
     // 단건 추가
-    int insertPost(String title, String content);
+    int insertPost(
+    @Param("title")   String title,
+    @Param("content") String content
+    );
+
+    // Controller는 구체적인 Service 클래스를 알 필요가 없다
+    // Controller는 Service의 메서드 시그니처들만 알면 된다. ( 넘겨줄 매개변수, 받을 리턴값 )
+
+    // Service는 구체적인 Repostitory 클래스를 알 필요가 없다
+    // Service는 Repostitory의 메서드 시그니처들만 알면 된다
+
+    // controller - <interface> - service - <inteface> - repository => 컨트롤러는 inteface만 알면 된다
+
 
     // 단건 삭제 by id
     int deletePostById(int id);
 
     // 단건 업데이트 by id and entity
-    int updatePost(int id, String title, String content);
+    int updatePost(
+            @Param("id") int id,
+            @Param("title") String title,
+            @Param("content") String content
+    );
 }

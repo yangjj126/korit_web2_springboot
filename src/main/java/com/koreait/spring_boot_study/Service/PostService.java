@@ -81,7 +81,7 @@ public class PostService {
         Post post = postRepository.findPostById(id) // Optional<Post>
                 .orElseThrow(
                         () -> new PostNotFoundException("게시글을 찾을 수 없음")
-                );
+        );
         return new PostReqDto(post.getTitle(), post.getContent());
     }
 
