@@ -1,6 +1,6 @@
 package com.koreait.spring_boot_study.controller;
 
-import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.AddPostReqDto;
 import com.koreait.spring_boot_study.dto.req.StudyRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -56,7 +56,7 @@ public class StudyRestController3 {
     // 실습) test3라는 이름으로 AddPostReqDto 타입의 데이터를 수신해주세요.
 
     @PostMapping("/test3")
-    public ResponseEntity<?> test3(@RequestBody AddPostRequestDto dto) {
+    public ResponseEntity<?> test3(@RequestBody AddPostReqDto dto) {
         // *** ReesponseEntity : HTTP 응답을 자바에서 커스터마이징하기 편하게 만들어준다  -- 이것만 쓸거임
         // 제너릭타입을 받는다 -> body에 들어가는 데이터 타입
         // HTTP 상태 코드, BODY, header 등을 쉽게 지정할 수 있다

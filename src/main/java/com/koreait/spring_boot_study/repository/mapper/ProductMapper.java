@@ -74,4 +74,6 @@ public interface ProductMapper {
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice
     );
+
+    int insertProducts(List<Product> products);
 }

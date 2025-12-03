@@ -1,9 +1,8 @@
 package com.koreait.spring_boot_study.Service;
 
-import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.AddPostReqDto;
 import com.koreait.spring_boot_study.dto.req.ModifyPostReqDto;
 import com.koreait.spring_boot_study.dto.req.SearchPostReqDto;
-import com.koreait.spring_boot_study.dto.req.SearchProductReqDto;
 import com.koreait.spring_boot_study.dto.res.PostReqDto;
 import com.koreait.spring_boot_study.dto.res.PostWithCommentsResDto;
 import com.koreait.spring_boot_study.dto.res.SearchPostResDto;
@@ -15,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,7 +103,7 @@ public class PostService {
     <Repostitory>
     InsertProduct 실행
      */
-    public void addPost(@Valid AddPostRequestDto dto){
+    public void addPost(@Valid AddPostReqDto dto){
         int successCount = postRepository.insertPost(dto.getTitle(), dto.getContent());
 
         if (successCount <= 0){
@@ -146,7 +146,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostWithCommentsResDto getPostWithComments(int id){
+    public PostWithCommentsResDto getPostWithComments(int id) {
         Post post = postRepository.findPostWithComments(id).orElseThrow(()-> new PostNotFoundException("해당 게시글을 찾을 수 없습니다."));
 
         // comments List null 체크해야함!
@@ -156,11 +156,31 @@ public class PostService {
                 .stream().map(c-> c.getCommentContent())
                 .collect(Collectors.toList()); // 아니라면, id 빼고 content 내용만 content 내용만
 
+
         return new PostWithCommentsResDto(
                 post.getTitle(),
                 post.getContent(),
                 comments
         );
     }
+    public void addPosts(List<AddPostReqDto> dtoList){
+        // List<dto> -> List<entity>
 
+        List<Post> entityList = new ArrayList<>(); // 빈 리스트
+
+        // 매개변수로 들어온, dtoList를 순회
+        for (AddPostReqDto dto : dtoList) {
+            Post post = Post.builder()
+                    .title(dto.getTitle())
+                    .content(dto.getContent())
+                    .build();
+            entityList.add(post);
+        }
+
+        int successCount = postRepository.insertPosts(entityList);
+
+        if (successCount != entityList.size()) {
+            throw new PostInsertException("게시글 등록 중 문제 발생");
+        }
+    }
 }

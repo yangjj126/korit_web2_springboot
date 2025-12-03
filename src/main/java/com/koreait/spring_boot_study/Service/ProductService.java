@@ -14,6 +14,7 @@ import com.koreait.spring_boot_study.repository.mapper.ProductMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class ProductService {
     <Controller>
     컨트롤러에 이미 제이슨으로 값이 입력되어있고, 컨트롤러에서 .addProduct를 조지고
     <Service>
-    addProduct안에서
+    addProduct 안에서
     InsertProduct를 통해서, dto.getName() , dto.getPrice()을 하고,
     <Repostitory>
     InsertProduct 실행
@@ -183,5 +184,29 @@ public class ProductService {
             dtos.add(resDto);
         }
         return dtos;
+    }
+
+    // 트랜잭션 - 롤백
+    // 해당 메서드를 트랜잭션으로 실행하겠다
+    // 메서드 종료 직전에 정상 종료 라면, commit
+    // 예외가 발생할 경우, rollback
+    // 어노테이션만 설정하면, 알아서 db로
+    // start transaction , commit, rollback 쿼리를 삽입해서 송신한다
+    @Transactional(rollbackFor = Exception.class)
+    public void addProducts(List<AddProductReqDto> dtoList){
+        // List<dto> -> List<entity> 변환
+        List<Product> products = dtoList.stream() // id, price만 초기화하고 싶어서, product에 builder 어션 추가
+                        .map(dto -> Product.builder()
+                                .name(dto.getName())
+                                .price(dto.getPrice())
+                                .build())
+                                .collect(Collectors.toList());
+
+        int successCount = productRepository.insertProducts(products);
+
+        // 전체 건수만큼 insert 되지 않았다면, 예외처리
+        if (successCount != products.size()) {
+            throw new ProductinsertExeption("상품등록중 문제 발생");
+        }
     }
 }

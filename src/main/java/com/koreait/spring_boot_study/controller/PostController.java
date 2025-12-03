@@ -1,10 +1,11 @@
 package com.koreait.spring_boot_study.controller;
 
 import com.koreait.spring_boot_study.Service.PostService;
-import com.koreait.spring_boot_study.dto.req.AddPostRequestDto;
+import com.koreait.spring_boot_study.dto.req.AddPostReqDto;
 import com.koreait.spring_boot_study.dto.req.ModifyPostReqDto;
 import com.koreait.spring_boot_study.dto.req.SearchPostReqDto;
 import com.koreait.spring_boot_study.dto.res.PostReqDto;
+import com.koreait.spring_boot_study.dto.res.PostWithCommentsResDto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class PostController {
     // +  Validation을 사용해봅시다!
     @PostMapping("/add")
     public ResponseEntity<?> addPost(
-            @Valid @RequestBody AddPostRequestDto dto // 잭슨이 dto를 만들때, NoArgsController
+            @Valid @RequestBody AddPostReqDto dto // 잭슨이 dto를 만들때, NoArgsController
     ){
         postService.addPost(dto);
         // 못적음
@@ -96,4 +97,20 @@ public class PostController {
 
         return ResponseEntity.ok( postService.searchDetailPosts(dto));
     }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<?> getPostWithComments(@PathVariable int id){
+        PostWithCommentsResDto dto = postService.getPostWithComments(id);
+        return ResponseEntity.ok(dto);
+    }
+
+//    public ResponseEntity<?> addPosts(
+//            @Valid @RequestBody List<AddPostReqDto> dtoList
+//    ){
+//        postService.addPost(dtoList);
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body()
+//    }
+//    또 다못적음
 }
